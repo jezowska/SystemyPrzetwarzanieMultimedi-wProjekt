@@ -2,7 +2,7 @@ import app
 
 if __name__ == "__main__":
     my_app = app.App(
-        title="Simple music app",
+        title="Work-Out Music Mix Generator",
         geometry="400x250"
     )
 

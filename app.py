@@ -22,11 +22,14 @@ class Functions:
         self.BREAK = BREAK
         self.DURATION = DURATION
         self.filetypes = filetypes
-        self.track_data = np.empty((0, 2)) # tworzenie tablicy o wymiarach 0x2, empty tworzy niewyzerowaną tablicę. 0x2 aby złączyć później dwie różne tablice ze sobą
+        self.track_data = np.empty((0, 2))  # tworzenie tablicy o wymiarach 0x2,
+                                            # empty tworzy niewyzerowaną tablicę.
+                                            # wymiary są 0x2 aby złączyć później dwie różne tablice ze sobą
         self.track_samplerate = default_samplerate
         self.current_track = ""  # ścieżka do wybranego pliku wav, który będzie odtwarzany
 
-    def play_track(self): # za pomocą biblioteki sounddevice odtwarzamy dany plik, jako argumenty podajemy ścieżkę pliku i ile próbek w ciągu sekundy ma otworzyć
+    def play_track(self): # za pomocą biblioteki sounddevice odtwarzamy dany plik,
+                          # jako argumenty podajemy ścieżkę pliku i ile próbek w ciągu sekundy ma otworzyć
         sd.play(
             self.track_data,
             self.track_samplerate,
@@ -64,27 +67,23 @@ class Functions:
                       ):
         output = np.empty((0, 2)) # szkielet tablicy wyjściowej
 
-        # iterowanie po wczytanych plikach
-        for i, f in enumerate(self.filenames):
+        for i, f in enumerate(self.filenames): # iterowanie po wczytanych plikach
             data, samplerate = sf.read(
                 f,
                 always_2d=True,
             )
 
-            # sprawdzamy czy nasz plik jest którszy niż DURATION i wybieramy którszą wartość
             timerate = min(
                 samplerate*self.DURATION,
                 len(data),
-            )
-
+            ) # sprawdzamy czy nasz plik jest którszy niż DURATION i wybieramy którszą wartość
 
             output = np.concatenate((
                 output,
                 data[:timerate],
             )) # do tablicy output dodajemy kolejny 30 sekundowy fragment
 
-            # sprawdzamy czy to ostatni fragment, który ma być dodany
-            if i < len(self.filenames) - 1:
+            if i < len(self.filenames) - 1: # sprawdzamy czy to ostatni fragment, który ma być dodany
                 output = np.concatenate((
                     output,
                     np.zeros((
@@ -92,8 +91,8 @@ class Functions:
                         2,
                     ))
                 ))
-
             ext = path.splitext(output_name)[1] # dobranie odpowiedniego rozszerzenia
+
             if ext == "":
                 output_name += output_extension
 
